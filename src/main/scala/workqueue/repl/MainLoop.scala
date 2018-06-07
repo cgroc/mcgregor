@@ -26,6 +26,7 @@ object MainLoop extends App {
   def loop: Unit = {
     val message = readLine("What do you want to say?: ")
     if (message equals ":q") {
+      sicklyConsumer.blat
       consumer1.blat
       consumer2.blat
       consumer3.blat

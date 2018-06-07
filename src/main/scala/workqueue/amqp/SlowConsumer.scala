@@ -2,6 +2,8 @@ package workqueue.amqp
 
 import com.rabbitmq.client._
 
+import scala.util.control.NonFatal
+
 
 class SlowConsumer(_name: String) extends Runnable {
 
@@ -36,7 +38,12 @@ class SlowConsumer(_name: String) extends Runnable {
 
   def blat: Unit = {
 
-    channel.close()
-    connection.close()
+    try {
+      channel.close()
+      connection.close()
+    } catch {
+      case NonFatal(err) =>
+        println(s"Ouch!\n$err")
+    }
   }
 }

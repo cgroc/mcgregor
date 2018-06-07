@@ -2,6 +2,8 @@ package workqueue.amqp
 
 import com.rabbitmq.client._
 
+import scala.util.control.NonFatal
+
 // receives a message then kicks the bucket without acking, just want to see rabbit requeue the messages!
 
 class SicklyConsumer(_name: String) extends Runnable {
@@ -38,7 +40,12 @@ class SicklyConsumer(_name: String) extends Runnable {
 
   def blat: Unit = {
 
-    channel.close()
-    connection.close()
+    try {
+      channel.close()
+      connection.close()
+    } catch {
+      case NonFatal(err) =>
+        println(s"Ouch!\n$err")
+    }
   }
 }
