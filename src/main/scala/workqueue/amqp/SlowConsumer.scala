@@ -1,10 +1,11 @@
-package hello.amqp
+package workqueue.amqp
 
 import com.rabbitmq.client._
 
 
-class BasicConsumer extends Runnable {
+class SlowConsumer(_name: String) extends Runnable {
 
+  val name = _name
 
   val QUEUE_NAME: String = "hello"
 
@@ -17,13 +18,15 @@ class BasicConsumer extends Runnable {
 
   override def run(): Unit = {
 
-    println(" [*] Consumer waiting for messages.")
+    println(s" [*] Consumer $name waiting for messages.")
 
     val consumer: Consumer = new DefaultConsumer(channel) {
 
       override def handleDelivery(consumerTag: String, envelope: Envelope, properties: AMQP.BasicProperties, body: Array[Byte]) = {
-        val message: String = new String(body, "UTF-8");
-        println(" [x] Received '" + message + "'");
+        val message: String = new String(body, "UTF-8")
+        println(s" [x] $name received '$message', processing...")
+        Thread.sleep(3000)
+        println(s" [x] $name done!")
       }
     }
 

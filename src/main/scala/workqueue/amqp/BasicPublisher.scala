@@ -1,4 +1,4 @@
-package hello.amqp
+package workqueue.amqp
 
 import com.rabbitmq.client.ConnectionFactory
 
@@ -20,7 +20,7 @@ object BasicPublisher {
     channel.queueDeclare(QUEUE_NAME, false, false, false, null)
 
     channel.basicPublish("", QUEUE_NAME, null, message.getBytes)
-    println(" [x] Sent '" + message + "'")
+    System.out.println(" [x] Sent '" + message + "'")
 
     // deal with resources
 
