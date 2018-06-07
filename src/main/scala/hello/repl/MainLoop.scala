@@ -18,7 +18,6 @@ object MainLoop extends App {
     val message = readLine("What do you want to say?: ")
     if (message equals ":q") {
       consumer.blat
-      consumerDaemon.stop() // this is deprecated, how can I do this nicely?
     } else {
       handleMessage(message)
       loop
